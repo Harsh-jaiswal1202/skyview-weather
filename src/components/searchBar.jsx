@@ -1,22 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function SearchBar({ onSearch }) {
-  const [input, setInput] = React.useState('');
+function SearchBar({ onSearch }) {
+  const [city, setCity] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (input) onSearch(input);
+  const handleSearch = () => {
+    if (city.trim()) {
+      onSearch(city);
+      setCity('');
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="search-bar">
+    <div className="search-bar">
       <input
         type="text"
-        placeholder="Enter city name"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        placeholder="Enter city..."
+        value={city}
+        onChange={(e) => setCity(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
       />
-      <button type="submit">🔍</button>
-    </form>
+      <button onClick={handleSearch}>🔍</button>
+    </div>
   );
 }
+
+export default SearchBar;
